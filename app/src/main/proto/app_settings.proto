@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "com.duwna.debelias";
+option java_multiple_files = true;
+
+message AppSettingsDto {
+  uint32 max_points = 1;
+  uint32 max_seconds = 2;
+}
