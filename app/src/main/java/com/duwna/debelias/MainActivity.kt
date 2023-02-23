@@ -17,6 +17,7 @@ import com.duwna.debelias.data.MessageHandler
 import com.duwna.debelias.navigation.Navigator
 import com.duwna.debelias.presentation.Screen
 import com.duwna.debelias.presentation.SnackbarScaffold
+import com.duwna.debelias.presentation.screens.game_playing.GamePlayingScreen
 import com.duwna.debelias.presentation.screens.main.MainScreen
 import com.duwna.debelias.presentation.screens.settings.SettingsScreen
 import com.duwna.debelias.presentation.theme.DebeliasTheme
@@ -63,10 +64,10 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun MainNavHost(navController: NavHostController) {
-        NavHost(navController, startDestination = Screen.Main.route) {
+        NavHost(navController, startDestination = Screen.GamePlaying.route) {
             composable(Screen.Main.route) { MainScreen() }
             composable(Screen.GameStatus.route) { SettingsScreen() }
-            composable(Screen.GamePlaying.route) { SettingsScreen() }
+            composable(Screen.GamePlaying.route) { GamePlayingScreen() }
         }
     }
 }

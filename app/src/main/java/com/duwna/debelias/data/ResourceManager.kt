@@ -1,6 +1,8 @@
 package com.duwna.debelias.data
 
 import android.content.Context
+import androidx.annotation.RawRes
+import java.io.InputStream
 import javax.inject.Inject
 
 class ResourceManager @Inject constructor(
@@ -12,5 +14,8 @@ class ResourceManager @Inject constructor(
 
     fun stringArray(id: Int): Array<String> =
         context.resources.getStringArray(id)
+
+    fun getRawStream(@RawRes idRes: Int): InputStream =
+        context.resources.openRawResource(idRes)
 
 }
