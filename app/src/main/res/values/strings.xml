@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Debelias</string>
+    <string name="seconds_template">%d с.</string>
 </resources>

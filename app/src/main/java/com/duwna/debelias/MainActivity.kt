@@ -19,6 +19,7 @@ import com.duwna.debelias.presentation.Screen
 import com.duwna.debelias.presentation.SnackbarScaffold
 import com.duwna.debelias.presentation.screens.game_playing.GamePlayingScreen
 import com.duwna.debelias.presentation.screens.main.MainScreen
+import com.duwna.debelias.presentation.screens.round_result.RoundResultScreen
 import com.duwna.debelias.presentation.screens.settings.SettingsScreen
 import com.duwna.debelias.presentation.theme.DebeliasTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,10 +65,11 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun MainNavHost(navController: NavHostController) {
-        NavHost(navController, startDestination = Screen.GamePlaying.route) {
+        NavHost(navController, startDestination = Screen.RoundResult.route) {
             composable(Screen.Main.route) { MainScreen() }
             composable(Screen.GameStatus.route) { SettingsScreen() }
             composable(Screen.GamePlaying.route) { GamePlayingScreen() }
+            composable(Screen.RoundResult.route) { RoundResultScreen() }
         }
     }
 }
