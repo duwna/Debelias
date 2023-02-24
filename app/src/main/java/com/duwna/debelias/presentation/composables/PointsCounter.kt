@@ -12,15 +12,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.duwna.debelias.R
 
 @Composable
 fun PointsCounter(
     value: Int,
     modifier: Modifier = Modifier,
+    showSign: Boolean = false,
     textSize: TextUnit = 20.sp
 ) {
     Box(
@@ -34,7 +37,10 @@ fun PointsCounter(
             )
     ) {
         Text(
-            text = value.toString(),
+            text = when {
+                showSign && value >= 0 -> stringResource(R.string.added_points_template, value)
+                else -> value.toString()
+            },
             color = MaterialTheme.colors.onPrimary,
             fontSize = textSize,
             modifier = Modifier.align(Alignment.Center)

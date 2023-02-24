@@ -9,7 +9,7 @@ data class Settings(
 
     companion object {
 
-        private const val DEFAULT_MAX_POINTS = 3
+        private const val DEFAULT_MAX_POINTS = 60
         private const val DEFAULT_MAX_SECONDS = 10
 
         val maxPoints = 5..100

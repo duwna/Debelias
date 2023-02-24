@@ -90,6 +90,7 @@ class GamaPlayingViewModel @Inject constructor(
             }
 
             override fun onFinish() {
+                groupsRepository.addedPointsFlow.tryEmit(state.value?.currentPoints ?: 0)
                 navigator.popBackStack()
             }
         }.start()
