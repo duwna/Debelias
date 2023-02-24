@@ -51,6 +51,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                 currentState.groups.forEachIndexed { index, group ->
                     GroupInput(
                         name = group.name,
+                        canRemoveGroup = currentState.canRemoveGroup,
                         modifier = Modifier.fillMaxWidth(),
                         onTextChanged = { viewModel.onGroupNameChanged(it, index) },
                         onRemoveClicked = { viewModel.onRemoveGroupClicked(index) }
@@ -72,28 +73,28 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     selectedText = stringResource(R.string.slider_round_seconds, currentState.settings.roundSeconds),
                     selectedValue = currentState.roundSecondsSliderValue,
                     onValueChanged = viewModel::setRoundSeconds,
-                    onValueChangeFinished = { }
+                    onValueChangeFinished = viewModel::saveRoundSeconds
                 )
 
                 SliderWithText(
                     selectedText = stringResource(R.string.slider_max_points, currentState.settings.maxPoints),
                     selectedValue = currentState.maxPointsSliderValue,
                     onValueChanged = viewModel::setMaxPoints,
-                    onValueChangeFinished = { }
+                    onValueChangeFinished = viewModel::saveMaxPoints
                 )
 
                 SliderWithText(
                     selectedText = stringResource(R.string.slider_success_word_points, currentState.settings.successWordPoints),
                     selectedValue = currentState.successWordPointsSliderValue,
                     onValueChanged = viewModel::setSuccessWordPoints,
-                    onValueChangeFinished = { }
+                    onValueChangeFinished = viewModel::saveSuccessWordPoints
                 )
 
                 SliderWithText(
                     selectedText = stringResource(R.string.slider_failure_word_points, currentState.settings.failureWordPoints),
                     selectedValue = currentState.failureWordPointsSliderValue,
                     onValueChanged = viewModel::setFailureWordPoints,
-                    onValueChangeFinished = { }
+                    onValueChangeFinished = viewModel::saveFailureWordPoints
                 )
             }
         } else {

@@ -3,8 +3,10 @@ package com.duwna.debelias.presentation.screens.game_playing
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,7 +39,8 @@ fun GamePlayingScreen(viewModel: GamaPlayingViewModel = hiltViewModel()) {
                 value = currentState.currentPoints,
                 modifier = Modifier
                     .padding(top = 40.dp)
-                    .size(40.dp)
+                    .height(40.dp)
+                    .widthIn(40.dp)
                     .align(Alignment.TopCenter)
             )
 

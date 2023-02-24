@@ -4,9 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -48,7 +49,9 @@ fun TopCard(
 
             PointsCounter(
                 value = maxPoints,
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier
+                    .height(30.dp)
+                    .widthIn(30.dp)
             )
 
             Spacer(modifier = Modifier.weight(1f))

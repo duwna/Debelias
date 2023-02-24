@@ -11,7 +11,6 @@ import com.duwna.debelias.data.repositories.SettingsRepository
 import com.duwna.debelias.data.repositories.WordsRepository
 import com.duwna.debelias.domain.models.GameGroup
 import com.duwna.debelias.domain.models.Settings
-import com.duwna.debelias.navigation.Navigator
 import com.duwna.debelias.presentation.utils.SliderFractionUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +25,6 @@ class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val groupsRepository: GroupsRepository,
     private val vibrator: Vibrator,
-    private val navigator: Navigator,
     private val wordsRepository: WordsRepository,
     private val messageHandler: MessageHandler
 ) : ViewModel() {
@@ -44,11 +42,21 @@ class SettingsViewModel @Inject constructor(
         _state.update {
             it?.copy(groups = it.groups.toMutableList().apply { this[index] = this[index].copy(name = name) })
         }
+
+        viewModelScope.launch(exceptionHandler(messageHandler)) {
+            groupsRepository.editGroup(checkNotNull(state.value).groups[index])
+        }
     }
 
     fun onRemoveGroupClicked(index: Int) {
+        val group = checkNotNull(state.value).groups[index]
+
         _state.update {
             it?.copy(groups = it.groups.toMutableList().apply { removeAt(index) })
+        }
+
+        viewModelScope.launch(exceptionHandler(messageHandler)) {
+            groupsRepository.removeGroup(group)
         }
     }
 
@@ -58,6 +66,8 @@ class SettingsViewModel @Inject constructor(
             _state.update {
                 it?.copy(groups = it.groups.toMutableList().apply { add(newGroup) })
             }
+
+            groupsRepository.addGroup(newGroup)
         }
     }
 
@@ -95,6 +105,30 @@ class SettingsViewModel @Inject constructor(
             range = Settings.failureWordPoints,
             settingsUpdate = { copy(failureWordPoints = it) }
         )
+    }
+
+    fun saveMaxPoints() {
+        viewModelScope.launch(exceptionHandler(messageHandler)) {
+            settingsRepository.saveMaxPoints(checkNotNull(state.value).settings.maxPoints)
+        }
+    }
+
+    fun saveRoundSeconds() {
+        viewModelScope.launch(exceptionHandler(messageHandler)) {
+            settingsRepository.saveRoundSeconds(checkNotNull(state.value).settings.roundSeconds)
+        }
+    }
+
+    fun saveSuccessWordPoints() {
+        viewModelScope.launch(exceptionHandler(messageHandler)) {
+            settingsRepository.saveSuccessWordPoints(checkNotNull(state.value).settings.successWordPoints)
+        }
+    }
+
+    fun saveFailureWordPoints() {
+        viewModelScope.launch(exceptionHandler(messageHandler)) {
+            settingsRepository.saveFailureWordPoints(checkNotNull(state.value).settings.failureWordPoints)
+        }
     }
 
     private fun updateSliderState(

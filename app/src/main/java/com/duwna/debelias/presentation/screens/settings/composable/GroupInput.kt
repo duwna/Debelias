@@ -19,6 +19,7 @@ import com.duwna.debelias.R
 @Composable
 fun GroupInput(
     name: String,
+    canRemoveGroup: Boolean,
     modifier: Modifier,
     onTextChanged: (String) -> Unit,
     onRemoveClicked: () -> Unit
@@ -28,14 +29,16 @@ fun GroupInput(
         value = name,
         onValueChange = onTextChanged,
         trailingIcon = {
-            Image(
-                painter = painterResource(R.drawable.icon_remove),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                contentDescription = "remove member",
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .clickable(onClick = onRemoveClicked)
-            )
+            if (canRemoveGroup) {
+                Image(
+                    painter = painterResource(R.drawable.icon_remove),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                    contentDescription = "remove member",
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .clickable(onClick = onRemoveClicked)
+                )
+            }
         }
     )
 }

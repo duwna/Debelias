@@ -45,6 +45,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                     .align(Alignment.Center)
                     .verticalScroll(rememberScrollState())
             ) {
+                Spacer(modifier = Modifier.height(20.dp))
 
                 currentState.groups.forEach { group ->
                     Card(

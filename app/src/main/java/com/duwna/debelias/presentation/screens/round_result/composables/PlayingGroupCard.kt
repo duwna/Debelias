@@ -3,8 +3,9 @@ package com.duwna.debelias.presentation.screens.round_result.composables
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +47,9 @@ fun PlayingGroupCard(
 
             PointsCounter(
                 value = playingGroup.points,
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier
+                    .height(30.dp)
+                    .widthIn(30.dp)
             )
         }
     }

@@ -13,17 +13,23 @@ import javax.inject.Singleton
 class GroupsRepository @Inject constructor(
     private val persistentStorage: PersistentStorage
 ) {
-
     fun observeGroups(): Flow<List<GameGroup>> =
         persistentStorage.observeGroups().map {
             it.groupsList.map(GameGroup.Companion::fromDto)
         }
 
-    suspend fun getGroup(id: String): GameGroup = observeGroups()
-        .map { it.first { group -> group.id == id } }
-        .first()
+    suspend fun addGroup(group: GameGroup) {
+        val groupDto = GroupDto.newBuilder()
+            .setId(group.id)
+            .setName(group.name)
+            .build()
 
-    suspend fun saveGroup(group: GameGroup) {
+        persistentStorage.saveGroups {
+            addGroups(groupDto)
+        }
+    }
+
+    suspend fun editGroup(group: GameGroup) {
         val index = observeGroups()
             .map { it.indexOfFirst { groupDto -> groupDto.id == group.id } }
             .first()
@@ -34,10 +40,17 @@ class GroupsRepository @Inject constructor(
             .build()
 
         persistentStorage.saveGroups {
-            when {
-                index < 0 -> addGroups(groupDto)
-                else -> setGroups(index, groupDto)
-            }
+            setGroups(index, groupDto)
+        }
+    }
+
+    suspend fun removeGroup(group: GameGroup) {
+        val index = observeGroups()
+            .map { it.indexOfFirst { groupDto -> groupDto.id == group.id } }
+            .first()
+
+        persistentStorage.saveGroups {
+            removeGroups(index)
         }
     }
 }

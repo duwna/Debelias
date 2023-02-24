@@ -13,6 +13,9 @@ data class SettingsViewState(
     val settings: Settings
 ) {
 
+    val canRemoveGroup: Boolean
+        get() = groups.size > 2
+
     val maxPointsSliderValue: Float
         get() = SliderFractionUtils.getSliderFraction(maxPoints, settings.maxPoints)
 

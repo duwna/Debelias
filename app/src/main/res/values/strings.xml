@@ -12,4 +12,5 @@
     <string name="slider_max_points">Очков до победы: %d</string>
     <string name="slider_success_word_points">Очков за угаданное слово: %d</string>
     <string name="slider_failure_word_points">Очков за пропущенное слово: -%d</string>
+    <string name="game_end_dialog">Игра завершена\nПобедила команда: %s</string>
 </resources>

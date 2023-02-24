@@ -26,4 +26,7 @@ data class RoundResultViewState(
         }
     }
 
+    fun getVictoryGroupName(): String? =
+        playingGroups.find { it.points >= maxPoints }?.group?.name
+
 }

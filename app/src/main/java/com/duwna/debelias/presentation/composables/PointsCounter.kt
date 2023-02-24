@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -43,7 +45,9 @@ fun PointsCounter(
             },
             color = MaterialTheme.colors.onPrimary,
             fontSize = textSize,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 4.dp)
         )
     }
 
@@ -52,9 +56,17 @@ fun PointsCounter(
 @Preview(showSystemUi = true)
 @Composable
 private fun PointsCounterPreview() {
-    Column {
-        PointsCounter(value = 2, modifier = Modifier.size(40.dp))
+    Column(Modifier.fillMaxWidth()) {
+        PointsCounter(
+            value = 2333, modifier = Modifier
+                .height(40.dp)
+                .widthIn(40.dp)
+        )
         Spacer(modifier = Modifier.height(20.dp))
-        PointsCounter(value = -13, modifier = Modifier.size(40.dp))
+        PointsCounter(
+            value = -13, modifier = Modifier
+                .height(40.dp)
+                .widthIn(40.dp)
+        )
     }
 }

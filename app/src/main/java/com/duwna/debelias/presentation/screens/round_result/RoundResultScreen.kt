@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.duwna.debelias.R
 import com.duwna.debelias.presentation.composables.PointsCounter
+import com.duwna.debelias.presentation.screens.round_result.composables.GameEndDialog
 import com.duwna.debelias.presentation.screens.round_result.composables.PlayingGroupCard
 import com.duwna.debelias.presentation.screens.round_result.composables.TopCard
 
@@ -75,7 +76,8 @@ fun RoundResultScreen(viewModel: RoundResultViewModel = hiltViewModel()) {
                         value = currentState.addedPoints,
                         showSign = true,
                         modifier = Modifier
-                            .size(40.dp)
+                            .height(40.dp)
+                            .widthIn(40.dp)
                             .align(CenterHorizontally)
                     )
                 }
@@ -100,6 +102,10 @@ fun RoundResultScreen(viewModel: RoundResultViewModel = hiltViewModel()) {
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
+            }
+
+            currentState.getVictoryGroupName()?.let {
+                GameEndDialog(groupName = it, onDismiss = viewModel::onExitClicked)
             }
 
         } else {
