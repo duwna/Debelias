@@ -5,5 +5,7 @@ option java_multiple_files = true;
 
 message AppSettingsDto {
   uint32 max_points = 1;
-  uint32 max_seconds = 2;
+  uint32 round_seconds = 2;
+  uint32 success_word_points = 3;
+  uint32 failure_word_points = 4;
 }

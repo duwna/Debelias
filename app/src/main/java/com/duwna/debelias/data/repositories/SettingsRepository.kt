@@ -19,7 +19,15 @@ class SettingsRepository @Inject constructor(
         setMaxPoints(value)
     }
 
-    suspend fun saveRotationsCount(value: Int) = persistentStorage.saveSettings {
-        setMaxSeconds(value)
+    suspend fun saveRoundSeconds(value: Int) = persistentStorage.saveSettings {
+        setRoundSeconds(value)
+    }
+
+    suspend fun saveSuccessWordPoints(value: Int) = persistentStorage.saveSettings {
+        setSuccessWordPoints(value)
+    }
+
+    suspend fun saveFailureWordPoints(value: Int) = persistentStorage.saveSettings {
+        setFailureWordPoints(value)
     }
 }

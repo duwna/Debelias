@@ -1,6 +1,7 @@
 package com.duwna.debelias.domain.models
 
 import com.duwna.debelias.GroupDto
+import java.util.UUID
 
 data class GameGroup(
     val id: String,
@@ -12,6 +13,11 @@ data class GameGroup(
         fun fromDto(dto: GroupDto) = GameGroup(
             id = dto.id,
             name = dto.name
+        )
+
+        fun create(name: String) = GameGroup(
+            name = name,
+            id = UUID.randomUUID().toString()
         )
     }
 }

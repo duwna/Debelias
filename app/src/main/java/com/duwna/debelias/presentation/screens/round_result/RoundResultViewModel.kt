@@ -55,7 +55,7 @@ class RoundResultViewModel @Inject constructor(
     }
 
     fun onExitClicked() {
-
+        navigator.popBackStack()
     }
 
     private fun observeAddedPoints() {

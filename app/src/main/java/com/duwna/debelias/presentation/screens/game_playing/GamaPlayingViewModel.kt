@@ -10,16 +10,15 @@ import com.duwna.debelias.data.ResourceManager
 import com.duwna.debelias.data.exceptionHandler
 import com.duwna.debelias.data.repositories.GroupsRepository
 import com.duwna.debelias.data.repositories.SettingsRepository
+import com.duwna.debelias.data.repositories.WordsRepository
 import com.duwna.debelias.navigation.Navigator
 import com.duwna.debelias.presentation.screens.game_playing.composables.WordSwipeDirection
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -30,6 +29,7 @@ class GamaPlayingViewModel @Inject constructor(
     private val vibrator: Vibrator,
     private val navigator: Navigator,
     private val resourceManager: ResourceManager,
+    private val wordsRepository: WordsRepository,
     private val messageHandler: MessageHandler
 ) : ViewModel() {
 
@@ -48,7 +48,7 @@ class GamaPlayingViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it?.copy(
-                    currentWord = loadNewWord(),
+                    currentWord = wordsRepository.loadNewWord(),
                     currentPoints = when (direction) {
                         WordSwipeDirection.UP -> it.currentPoints + 1
                         WordSwipeDirection.DOWN -> it.currentPoints - 1
@@ -59,19 +59,12 @@ class GamaPlayingViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadNewWord(): String = withContext(Dispatchers.IO) {
-        resourceManager.openRawStream(R.raw.all_words_file)
-            .use { String(it.readBytes()) }
-            .split("\n")
-            .random()
-    }
-
     private fun setInitialState() {
         viewModelScope.launch((exceptionHandler(messageHandler))) {
-            val maxSeconds = settingsRepository.observeSettings().first().maxSeconds
+            val maxSeconds = settingsRepository.observeSettings().first().roundSeconds
 
             _state.value = GamePlayingViewState(
-                currentWord = loadNewWord(),
+                currentWord = wordsRepository.loadNewWord(),
                 secondsString = resourceManager.string(R.string.seconds_template, maxSeconds),
                 currentPoints = 0
             )

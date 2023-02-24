@@ -6,4 +6,10 @@
     <string name="start_game">Начать</string>
     <string name="exit_game">Завершить</string>
     <string name="added_points_template">+%d</string>
+    <string name="settings_button">Настроить</string>
+    <string name="add_button">Добавить</string>
+    <string name="slider_round_seconds">Время раунда: %d c.</string>
+    <string name="slider_max_points">Очков до победы: %d</string>
+    <string name="slider_success_word_points">Очков за угаданное слово: %d</string>
+    <string name="slider_failure_word_points">Очков за пропущенное слово: -%d</string>
 </resources>

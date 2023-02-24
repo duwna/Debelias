@@ -65,9 +65,9 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun MainNavHost(navController: NavHostController) {
-        NavHost(navController, startDestination = Screen.RoundResult.route) {
+        NavHost(navController, startDestination = Screen.Main.route) {
             composable(Screen.Main.route) { MainScreen() }
-            composable(Screen.GameStatus.route) { SettingsScreen() }
+            composable(Screen.Settings.route) { SettingsScreen() }
             composable(Screen.GamePlaying.route) { GamePlayingScreen() }
             composable(Screen.RoundResult.route) { RoundResultScreen() }
         }

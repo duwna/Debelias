@@ -20,7 +20,7 @@ import com.duwna.debelias.presentation.composables.PointsCounter
 import com.duwna.debelias.presentation.screens.round_result.RoundResultViewState
 
 @Composable
-fun GroupCard(
+fun PlayingGroupCard(
     playingGroup: RoundResultViewState.PlayingGroup,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false
@@ -56,7 +56,7 @@ fun GroupCard(
 @Preview(showSystemUi = true)
 fun GroupCardPreview() {
 
-    GroupCard(
+    PlayingGroupCard(
         playingGroup = RoundResultViewState.PlayingGroup(
             points = 3,
             group = GameGroup(id = "id", name = "Name")

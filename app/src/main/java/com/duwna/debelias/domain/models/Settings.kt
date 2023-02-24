@@ -4,20 +4,28 @@ import com.duwna.debelias.AppSettingsDto
 
 data class Settings(
     val maxPoints: Int,
-    val maxSeconds: Int
+    val roundSeconds: Int,
+    val successWordPoints: Int,
+    val failureWordPoints: Int
 ) {
 
     companion object {
 
         private const val DEFAULT_MAX_POINTS = 60
-        private const val DEFAULT_MAX_SECONDS = 10
+        private const val DEFAULT_ROUND_SECONDS = 60
+        private const val DEFAULT_SUCCESS_WORD_POINTS = 2
+        private const val DEFAULT_FAILURE_WORD_POINTS = 1
 
-        val maxPoints = 5..100
-        val maxSeconds = 20..100
+        val maxPoints = 20..200
+        val roundSeconds = 5..150
+        val successWordPoints = 1..10
+        val failureWordPoints = 0..10
 
         fun fromDto(dto: AppSettingsDto) = Settings(
             maxPoints = dto.maxPoints.takeIf { it != 0 } ?: DEFAULT_MAX_POINTS,
-            maxSeconds = dto.maxSeconds.takeIf { it != 0 } ?: DEFAULT_MAX_SECONDS,
+            roundSeconds = dto.roundSeconds.takeIf { it != 0 } ?: DEFAULT_ROUND_SECONDS,
+            successWordPoints = dto.successWordPoints.takeIf { it != 0 } ?: DEFAULT_SUCCESS_WORD_POINTS,
+            failureWordPoints = dto.failureWordPoints.takeIf { it != 0 } ?: DEFAULT_FAILURE_WORD_POINTS
         )
     }
 }

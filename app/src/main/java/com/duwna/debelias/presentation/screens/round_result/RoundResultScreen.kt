@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.duwna.debelias.R
 import com.duwna.debelias.presentation.composables.PointsCounter
-import com.duwna.debelias.presentation.screens.round_result.composables.GroupCard
+import com.duwna.debelias.presentation.screens.round_result.composables.PlayingGroupCard
 import com.duwna.debelias.presentation.screens.round_result.composables.TopCard
 
 @Composable
@@ -61,7 +61,7 @@ fun RoundResultScreen(viewModel: RoundResultViewModel = hiltViewModel()) {
                 currentState
                     .playingGroups
                     .forEachIndexed { index, group ->
-                        GroupCard(
+                        PlayingGroupCard(
                             playingGroup = group,
                             isSelected = currentState.isGroupSelected(index)
                         )
