@@ -11,6 +11,17 @@ import com.duwna.debelias.data.repositories.SettingsRepository
 import com.duwna.debelias.data.repositories.WordsRepository
 import com.duwna.debelias.domain.models.GameGroup
 import com.duwna.debelias.domain.models.Settings
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.AddGroup
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.OnGroupNameChanged
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.OnRemoveGroupClicked
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveFailureWordPoints
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveMaxPoints
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveRoundSeconds
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveSuccessWordPoints
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetFailureWordPoints
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetMaxPoints
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetRoundSeconds
+import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetSuccessWordPoints
 import com.duwna.debelias.presentation.utils.SliderFractionUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +49,21 @@ class SettingsViewModel @Inject constructor(
         setInitialState()
     }
 
-    fun onGroupNameChanged(name: String, index: Int) {
+    fun onAction(action: SettingsViewAction) = when (action) {
+        AddGroup -> addGroup()
+        SaveFailureWordPoints -> saveFailureWordPoints()
+        SaveMaxPoints -> saveMaxPoints()
+        SaveRoundSeconds -> saveRoundSeconds()
+        SaveSuccessWordPoints -> saveSuccessWordPoints()
+        is OnRemoveGroupClicked -> onRemoveGroupClicked(action.index)
+        is OnGroupNameChanged -> onGroupNameChanged(action.name, action.index)
+        is SetFailureWordPoints -> setFailureWordPoints(action.fraction)
+        is SetMaxPoints -> setMaxPoints(action.fraction)
+        is SetRoundSeconds -> setRoundSeconds(action.fraction)
+        is SetSuccessWordPoints -> setSuccessWordPoints(action.fraction)
+    }
+
+    private fun onGroupNameChanged(name: String, index: Int) {
         _state.update {
             it?.copy(groups = it.groups.toMutableList().apply { this[index] = this[index].copy(name = name) })
         }
@@ -48,7 +73,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun onRemoveGroupClicked(index: Int) {
+    private fun onRemoveGroupClicked(index: Int) {
         val group = checkNotNull(state.value).groups[index]
 
         _state.update {
@@ -60,7 +85,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun addGroup() {
+    private fun addGroup() {
         viewModelScope.launch(exceptionHandler(messageHandler)) {
             val newGroup = GameGroup.create(name = wordsRepository.loadNewWord())
             _state.update {
@@ -71,7 +96,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun setMaxPoints(fraction: Float) {
+    private fun setMaxPoints(fraction: Float) {
         updateSliderState(
             oldValueFactory = { maxPoints },
             fraction = fraction,
@@ -80,7 +105,7 @@ class SettingsViewModel @Inject constructor(
         )
     }
 
-    fun setRoundSeconds(fraction: Float) {
+    private fun setRoundSeconds(fraction: Float) {
         updateSliderState(
             oldValueFactory = { roundSeconds },
             fraction = fraction,
@@ -89,7 +114,7 @@ class SettingsViewModel @Inject constructor(
         )
     }
 
-    fun setSuccessWordPoints(fraction: Float) {
+    private fun setSuccessWordPoints(fraction: Float) {
         updateSliderState(
             oldValueFactory = { successWordPoints },
             fraction = fraction,
@@ -98,7 +123,7 @@ class SettingsViewModel @Inject constructor(
         )
     }
 
-    fun setFailureWordPoints(fraction: Float) {
+    private fun setFailureWordPoints(fraction: Float) {
         updateSliderState(
             oldValueFactory = { failureWordPoints },
             fraction = fraction,
@@ -107,25 +132,25 @@ class SettingsViewModel @Inject constructor(
         )
     }
 
-    fun saveMaxPoints() {
+    private fun saveMaxPoints() {
         viewModelScope.launch(exceptionHandler(messageHandler)) {
             settingsRepository.saveMaxPoints(checkNotNull(state.value).settings.maxPoints)
         }
     }
 
-    fun saveRoundSeconds() {
+    private fun saveRoundSeconds() {
         viewModelScope.launch(exceptionHandler(messageHandler)) {
             settingsRepository.saveRoundSeconds(checkNotNull(state.value).settings.roundSeconds)
         }
     }
 
-    fun saveSuccessWordPoints() {
+    private fun saveSuccessWordPoints() {
         viewModelScope.launch(exceptionHandler(messageHandler)) {
             settingsRepository.saveSuccessWordPoints(checkNotNull(state.value).settings.successWordPoints)
         }
     }
 
-    fun saveFailureWordPoints() {
+    private fun saveFailureWordPoints() {
         viewModelScope.launch(exceptionHandler(messageHandler)) {
             settingsRepository.saveFailureWordPoints(checkNotNull(state.value).settings.failureWordPoints)
         }
