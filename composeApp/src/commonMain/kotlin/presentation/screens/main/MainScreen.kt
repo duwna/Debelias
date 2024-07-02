@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.screens.main
+package presentation.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,13 +22,27 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.duwna.debelias.R
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.compose.viewModel
+import debelias_multiplatform.composeapp.generated.resources.Res
+import debelias_multiplatform.composeapp.generated.resources.settings_button
+import debelias_multiplatform.composeapp.generated.resources.start_game
+import org.jetbrains.compose.resources.stringResource
+import kotlin.reflect.KClass
 
 @Composable
-fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(
+    viewModel: MainViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
+                return MainViewModel() as T
+            }
+        }
+    )
+) {
     val state by viewModel.state.collectAsState()
 
     Box(
@@ -66,7 +80,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                     onClick = viewModel::startGame,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = stringResource(R.string.start_game))
+                    Text(text = stringResource(Res.string.start_game))
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -76,7 +90,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {
-                    Text(text = stringResource(R.string.settings_button))
+                    Text(text = stringResource(Res.string.settings_button))
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))

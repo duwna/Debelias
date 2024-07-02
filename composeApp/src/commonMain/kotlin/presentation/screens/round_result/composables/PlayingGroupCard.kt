@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.screens.round_result.composables
+package presentation.screens.round_result.composables
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,11 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.duwna.debelias.domain.models.GameGroup
-import com.duwna.debelias.presentation.composables.PointsCounter
-import com.duwna.debelias.presentation.screens.round_result.RoundResultViewState
+import domain.models.GameGroup
+import presentation.composables.PointsCounter
+import presentation.screens.round_result.RoundResultViewState
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PlayingGroupCard(
@@ -56,9 +56,8 @@ fun PlayingGroupCard(
 }
 
 @Composable
-@Preview(showSystemUi = true)
+@Preview()
 fun GroupCardPreview() {
-
     PlayingGroupCard(
         playingGroup = RoundResultViewState.PlayingGroup(
             points = 3,

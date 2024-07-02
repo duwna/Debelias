@@ -1,6 +1,6 @@
-package com.duwna.debelias.presentation.screens.main
+package presentation.screens.main
 
-import com.duwna.debelias.domain.models.GameGroup
+import domain.models.GameGroup
 
 data class MainViewState(
     val groups: List<GameGroup>

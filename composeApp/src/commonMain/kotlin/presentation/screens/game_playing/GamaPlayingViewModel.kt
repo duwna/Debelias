@@ -1,39 +1,37 @@
-package com.duwna.debelias.presentation.screens.game_playing
+package presentation.screens.game_playing
 
-import android.os.CountDownTimer
-import android.os.Vibrator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.duwna.debelias.R
-import com.duwna.debelias.data.MessageHandler
-import com.duwna.debelias.data.ResourceManager
-import com.duwna.debelias.data.exceptionHandler
-import com.duwna.debelias.data.repositories.SettingsRepository
-import com.duwna.debelias.data.repositories.WordsRepository
-import com.duwna.debelias.navigation.Navigator
-import com.duwna.debelias.presentation.screens.game_playing.composables.WordSwipeDirection
-import dagger.hilt.android.lifecycle.HiltViewModel
+import data.MessageHandler
+import data.exceptionHandler
+import data.repositories.SettingsRepository
+import data.repositories.WordsRepository
+import debelias_multiplatform.composeapp.generated.resources.Res
+import debelias_multiplatform.composeapp.generated.resources.seconds_template
+import di.AppModule
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import kotlin.math.roundToInt
+import navigation.Navigator
+import org.jetbrains.compose.resources.getString
+import presentation.screens.game_playing.composables.WordSwipeDirection
 
-@HiltViewModel
-class GamaPlayingViewModel @Inject constructor(
-    private val settingsRepository: SettingsRepository,
-    private val navigator: Navigator,
-    private val resourceManager: ResourceManager,
-    private val wordsRepository: WordsRepository,
-    private val messageHandler: MessageHandler
+class GamaPlayingViewModel(
+    private val settingsRepository: SettingsRepository = AppModule.settingsRepository,
+    private val navigator: Navigator = AppModule.navigator,
+    private val wordsRepository: WordsRepository = AppModule.wordsRepository,
+    private val messageHandler: MessageHandler = AppModule.massageHandler
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<GamePlayingViewState?>(null)
     val state = _state.asStateFlow()
 
-    private var timer: CountDownTimer? = null
 
     init {
         setInitialState()
@@ -64,7 +62,7 @@ class GamaPlayingViewModel @Inject constructor(
 
             _state.value = GamePlayingViewState(
                 currentWord = wordsRepository.loadNewWord(),
-                secondsString = resourceManager.string(R.string.seconds_template, maxSeconds),
+                secondsString = getString(Res.string.seconds_template, maxSeconds),
                 currentPoints = 0
             )
 
@@ -73,24 +71,21 @@ class GamaPlayingViewModel @Inject constructor(
     }
 
     private fun createTimer(maxSeconds: Int) {
-        timer = object : CountDownTimer(maxSeconds * 1000L, 1000L) {
-            override fun onTick(millisUntilFinished: Long) {
-                val secondsLeft = (millisUntilFinished / 1000.0).roundToInt()
+        (maxSeconds downTo 1).asFlow()
+            .onEach { secondsLeft ->
                 _state.update {
-                    it?.copy(secondsString = resourceManager.string(R.string.seconds_template, secondsLeft))
+                    it?.copy(
+                        secondsString = getString(
+                            Res.string.seconds_template,
+                            secondsLeft
+                        )
+                    )
                 }
             }
-
-            override fun onFinish() {
+            .onCompletion {
                 wordsRepository.addedPointsFlow.tryEmit(state.value?.currentPoints ?: 0)
                 navigator.popBackStack()
             }
-        }.start()
+            .launchIn(viewModelScope)
     }
-
-    override fun onCleared() {
-        timer?.cancel()
-        super.onCleared()
-    }
-
 }

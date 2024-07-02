@@ -1,12 +1,12 @@
-package com.duwna.debelias.presentation
+package presentation
 
 sealed class Screen(val route: String) {
 
-    object Main : Screen("main")
+    data object Main : Screen("main")
 
-    object Settings : Screen("game_status")
+    data object Settings : Screen("game_status")
 
-    object GamePlaying : Screen("game_playing")
+    data object GamePlaying : Screen("game_playing")
 
-    object RoundResult : Screen("round_result")
+    data object RoundResult : Screen("round_result")
 }

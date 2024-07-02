@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.screens.round_result
+package presentation.screens.round_result
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,17 +20,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.duwna.debelias.R
-import com.duwna.debelias.presentation.composables.PointsCounter
-import com.duwna.debelias.presentation.screens.round_result.composables.GameEndDialog
-import com.duwna.debelias.presentation.screens.round_result.composables.PlayingGroupCard
-import com.duwna.debelias.presentation.screens.round_result.composables.TopCard
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.compose.viewModel
+import debelias_multiplatform.composeapp.generated.resources.Res
+import debelias_multiplatform.composeapp.generated.resources.continue_game
+import debelias_multiplatform.composeapp.generated.resources.start_game
+import org.jetbrains.compose.resources.stringResource
+import presentation.composables.PointsCounter
+import presentation.screens.round_result.composables.GameEndDialog
+import presentation.screens.round_result.composables.PlayingGroupCard
+import presentation.screens.round_result.composables.TopCard
+import kotlin.reflect.KClass
 
 @Composable
-fun RoundResultScreen(viewModel: RoundResultViewModel = hiltViewModel()) {
+fun RoundResultScreen(
+    viewModel: RoundResultViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
+                return RoundResultViewModel() as T
+            }
+        }
+    )
+) {
 
     val state by viewModel.state.collectAsState()
 
@@ -89,8 +103,8 @@ fun RoundResultScreen(viewModel: RoundResultViewModel = hiltViewModel()) {
                     Text(
                         text = stringResource(
                             when (currentState.addedPoints) {
-                                null -> R.string.start_game
-                                else -> R.string.continue_game
+                                null -> Res.string.start_game
+                                else -> Res.string.continue_game
                             }
                         )
                     )

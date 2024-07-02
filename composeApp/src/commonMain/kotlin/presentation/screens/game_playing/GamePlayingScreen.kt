@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.screens.game_playing
+package presentation.screens.game_playing
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,12 +16,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.duwna.debelias.presentation.composables.PointsCounter
-import com.duwna.debelias.presentation.screens.game_playing.composables.SwipeableWord
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.compose.viewModel
+import presentation.composables.PointsCounter
+import presentation.screens.game_playing.composables.SwipeableWord
+import kotlin.reflect.KClass
 
 @Composable
-fun GamePlayingScreen(viewModel: GamaPlayingViewModel = hiltViewModel()) {
+fun GamePlayingScreen(
+    viewModel: GamaPlayingViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
+                return GamaPlayingViewModel() as T
+            }
+        }
+    )
+) {
 
     val state by viewModel.state.collectAsState()
 

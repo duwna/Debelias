@@ -1,12 +1,12 @@
-package com.duwna.debelias.presentation.screens.settings
+package presentation.screens.settings
 
-import com.duwna.debelias.domain.models.GameGroup
-import com.duwna.debelias.domain.models.Settings
-import com.duwna.debelias.domain.models.Settings.Companion.failureWordPoints
-import com.duwna.debelias.domain.models.Settings.Companion.maxPoints
-import com.duwna.debelias.domain.models.Settings.Companion.roundSeconds
-import com.duwna.debelias.domain.models.Settings.Companion.successWordPoints
-import com.duwna.debelias.presentation.utils.SliderFractionUtils
+import presentation.utils.SliderFractionUtils
+import domain.models.GameGroup
+import domain.models.Settings
+import domain.models.Settings.Companion.failureWordPoints
+import domain.models.Settings.Companion.maxPoints
+import domain.models.Settings.Companion.roundSeconds
+import domain.models.Settings.Companion.successWordPoints
 
 data class SettingsViewState(
     val groups: List<GameGroup>,

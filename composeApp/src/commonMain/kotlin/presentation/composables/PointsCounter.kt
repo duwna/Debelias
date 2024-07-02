@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.composables
+package presentation.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,17 +9,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.duwna.debelias.R
+import debelias_multiplatform.composeapp.generated.resources.Res
+import debelias_multiplatform.composeapp.generated.resources.added_points_template
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PointsCounter(
@@ -32,18 +33,19 @@ fun PointsCounter(
         modifier = modifier
             .background(
                 color = when {
-                    value >= 0 -> MaterialTheme.colors.primary
-                    else -> MaterialTheme.colors.error
+                    value >= 0 -> MaterialTheme.colorScheme.primary
+                    else -> MaterialTheme.colorScheme.error
                 },
                 shape = CutCornerShape(4.dp)
             )
     ) {
+        Res.string
         Text(
             text = when {
-                showSign && value >= 0 -> stringResource(R.string.added_points_template, value)
+                showSign && value >= 0 -> stringResource(Res.string.added_points_template, value)
                 else -> value.toString()
             },
-            color = MaterialTheme.colors.onPrimary,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontSize = textSize,
             modifier = Modifier
                 .align(Alignment.Center)
@@ -53,7 +55,7 @@ fun PointsCounter(
 
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun PointsCounterPreview() {
     Column(Modifier.fillMaxWidth()) {

@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.utils
+package presentation.utils
 
 import kotlin.math.roundToInt
 

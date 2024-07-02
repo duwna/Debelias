@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.screens.round_result.composables
+package presentation.screens.round_result.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -17,10 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.duwna.debelias.R
-import com.duwna.debelias.presentation.composables.PointsCounter
+import debelias_multiplatform.composeapp.generated.resources.Res
+import debelias_multiplatform.composeapp.generated.resources.exit_game
+import debelias_multiplatform.composeapp.generated.resources.game_for
+import org.jetbrains.compose.resources.stringResource
+import presentation.composables.PointsCounter
 
 @Composable
 fun TopCard(
@@ -40,7 +42,7 @@ fun TopCard(
                 .align(Alignment.CenterHorizontally)
         ) {
             Text(
-                text = stringResource(R.string.game_for),
+                text = stringResource(Res.string.game_for),
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
@@ -57,7 +59,7 @@ fun TopCard(
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = stringResource(R.string.exit_game),
+                text = stringResource(Res.string.exit_game),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)

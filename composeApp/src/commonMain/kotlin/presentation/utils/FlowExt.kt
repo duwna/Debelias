@@ -1,6 +1,5 @@
-package com.duwna.debelias.presentation.utils
+package presentation.utils
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import kotlinx.coroutines.channels.BufferOverflow
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-@SuppressLint("ComposableNaming")
 @Composable
 fun <T> Flow<T>.collectAsEvent(
     context: CoroutineContext = EmptyCoroutineContext,

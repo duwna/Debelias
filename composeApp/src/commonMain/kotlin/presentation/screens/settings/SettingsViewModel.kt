@@ -1,49 +1,44 @@
-package com.duwna.debelias.presentation.screens.settings
+package presentation.screens.settings
 
-import android.os.VibrationEffect
-import android.os.Vibrator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.duwna.debelias.data.MessageHandler
-import com.duwna.debelias.data.exceptionHandler
-import com.duwna.debelias.data.repositories.GroupsRepository
-import com.duwna.debelias.data.repositories.SettingsRepository
-import com.duwna.debelias.data.repositories.WordsRepository
-import com.duwna.debelias.domain.models.GameGroup
-import com.duwna.debelias.domain.models.Settings
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.AddGroup
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.OnGroupNameChanged
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.OnRemoveGroupClicked
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveFailureWordPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveMaxPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveRoundSeconds
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveSuccessWordPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetFailureWordPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetMaxPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetRoundSeconds
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetSuccessWordPoints
-import com.duwna.debelias.presentation.utils.SliderFractionUtils
-import dagger.hilt.android.lifecycle.HiltViewModel
+import data.MessageHandler
+import data.exceptionHandler
+import data.repositories.GroupsRepository
+import data.repositories.SettingsRepository
+import data.repositories.WordsRepository
+import di.AppModule
+import di.Vibrator
+import domain.models.GameGroup
+import domain.models.Settings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import presentation.screens.settings.SettingsViewAction.AddGroup
+import presentation.screens.settings.SettingsViewAction.OnGroupNameChanged
+import presentation.screens.settings.SettingsViewAction.OnRemoveGroupClicked
+import presentation.screens.settings.SettingsViewAction.SaveFailureWordPoints
+import presentation.screens.settings.SettingsViewAction.SaveMaxPoints
+import presentation.screens.settings.SettingsViewAction.SaveRoundSeconds
+import presentation.screens.settings.SettingsViewAction.SaveSuccessWordPoints
+import presentation.screens.settings.SettingsViewAction.SetFailureWordPoints
+import presentation.screens.settings.SettingsViewAction.SetMaxPoints
+import presentation.screens.settings.SettingsViewAction.SetRoundSeconds
+import presentation.screens.settings.SettingsViewAction.SetSuccessWordPoints
+import presentation.utils.SliderFractionUtils
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
-    private val settingsRepository: SettingsRepository,
-    private val groupsRepository: GroupsRepository,
-    private val vibrator: Vibrator,
-    private val wordsRepository: WordsRepository,
-    private val messageHandler: MessageHandler
+class SettingsViewModel(
+    private val settingsRepository: SettingsRepository = AppModule.settingsRepository,
+    private val groupsRepository: GroupsRepository = AppModule.groupsRepository,
+    private val vibrator: Vibrator = AppModule.vibrator,
+    private val wordsRepository: WordsRepository = AppModule.wordsRepository,
+    private val messageHandler: MessageHandler = AppModule.massageHandler
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<SettingsViewState?>(null)
     val state = _state.asStateFlow()
-
-    private val sliderVibrationEffect = VibrationEffect.createOneShot(1, 50)
 
     init {
         setInitialState()
@@ -166,7 +161,7 @@ class SettingsViewModel @Inject constructor(
         val newValue = SliderFractionUtils.getValueFromFraction(range, fraction)
 
         _state.update { it?.copy(settings = settingsUpdate(it.settings, newValue)) }
-        if (oldValue != newValue) vibrator.vibrate(sliderVibrationEffect)
+        if (oldValue != newValue) vibrator.vibrate()
     }
 
     private fun setInitialState() {

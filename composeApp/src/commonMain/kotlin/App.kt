@@ -1,35 +1,48 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.painterResource
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import di.AppModule
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
-import debelias_multiplatform.composeapp.generated.resources.Res
-import debelias_multiplatform.composeapp.generated.resources.compose_multiplatform
+import presentation.Screen
+import presentation.screens.game_playing.GamePlayingScreen
+import presentation.screens.main.MainScreen
+import presentation.screens.round_result.RoundResultScreen
+import presentation.screens.settings.SettingsScreen
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
-            }
+        Navigation {
+            MainNavHost(it)
         }
+    }
+}
+
+@Composable
+fun Navigation(content: @Composable (NavHostController) -> Unit) {
+    val navController = rememberNavController()
+
+    DisposableEffect(key1 = navController) {
+        AppModule.navigator.setController(navController)
+        onDispose {
+            AppModule.navigator.clear()
+        }
+    }
+
+    content(navController)
+}
+
+@Composable
+private fun MainNavHost(navController: NavHostController) {
+    NavHost(navController, startDestination = Screen.Main.route) {
+        composable(Screen.Main.route) { MainScreen() }
+        composable(Screen.Settings.route) { SettingsScreen() }
+        composable(Screen.GamePlaying.route) { GamePlayingScreen() }
+        composable(Screen.RoundResult.route) { RoundResultScreen() }
     }
 }

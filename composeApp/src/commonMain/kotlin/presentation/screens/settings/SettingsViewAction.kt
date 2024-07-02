@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.screens.settings
+package presentation.screens.settings
 
 sealed interface SettingsViewAction {
 
@@ -10,9 +10,9 @@ sealed interface SettingsViewAction {
     data class SetSuccessWordPoints(val fraction: Float) : SettingsViewAction
     data class SetFailureWordPoints(val fraction: Float) : SettingsViewAction
 
-    object AddGroup : SettingsViewAction
-    object SaveMaxPoints : SettingsViewAction
-    object SaveRoundSeconds : SettingsViewAction
-    object SaveSuccessWordPoints : SettingsViewAction
-    object SaveFailureWordPoints : SettingsViewAction
+    data object AddGroup : SettingsViewAction
+    data object SaveMaxPoints : SettingsViewAction
+    data object SaveRoundSeconds : SettingsViewAction
+    data object SaveSuccessWordPoints : SettingsViewAction
+    data object SaveFailureWordPoints : SettingsViewAction
 }

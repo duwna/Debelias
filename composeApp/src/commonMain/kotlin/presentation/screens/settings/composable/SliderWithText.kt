@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.screens.settings.composable
+package presentation.screens.settings.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

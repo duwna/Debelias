@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.duwna.debelias.presentation.screens.settings.composable
+package presentation.screens.settings.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.duwna.debelias.R
+import debelias_multiplatform.composeapp.generated.resources.Res
+import debelias_multiplatform.composeapp.generated.resources.icon_remove
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun GroupInput(
@@ -31,7 +31,7 @@ fun GroupInput(
         trailingIcon = {
             if (canRemoveGroup) {
                 Image(
-                    painter = painterResource(R.drawable.icon_remove),
+                    painter = painterResource(Res.drawable.icon_remove),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                     contentDescription = "remove member",
                     modifier = Modifier
@@ -41,10 +41,4 @@ fun GroupInput(
             }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MemberInputPreview() {
-
 }

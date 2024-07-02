@@ -1,6 +1,6 @@
-package com.duwna.debelias.presentation.screens.round_result
+package presentation.screens.round_result
 
-import com.duwna.debelias.domain.models.GameGroup
+import domain.models.GameGroup
 
 data class RoundResultViewState(
     val playingGroups: List<PlayingGroup>,

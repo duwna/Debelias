@@ -1,4 +1,4 @@
-package com.duwna.debelias.presentation.screens.settings
+package presentation.screens.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,29 +19,45 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.duwna.debelias.R
-import com.duwna.debelias.domain.models.GameGroup
-import com.duwna.debelias.domain.models.Settings
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.AddGroup
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.OnGroupNameChanged
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.OnRemoveGroupClicked
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveFailureWordPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveMaxPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveRoundSeconds
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SaveSuccessWordPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetFailureWordPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetMaxPoints
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetRoundSeconds
-import com.duwna.debelias.presentation.screens.settings.SettingsViewAction.SetSuccessWordPoints
-import com.duwna.debelias.presentation.screens.settings.composable.GroupInput
-import com.duwna.debelias.presentation.screens.settings.composable.SliderWithText
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.compose.viewModel
+import debelias_multiplatform.composeapp.generated.resources.Res
+import debelias_multiplatform.composeapp.generated.resources.add_button
+import debelias_multiplatform.composeapp.generated.resources.slider_failure_word_points
+import debelias_multiplatform.composeapp.generated.resources.slider_max_points
+import debelias_multiplatform.composeapp.generated.resources.slider_round_seconds
+import debelias_multiplatform.composeapp.generated.resources.slider_success_word_points
+import domain.models.GameGroup
+import domain.models.Settings
+import org.jetbrains.compose.resources.stringResource
+import presentation.screens.settings.SettingsViewAction.AddGroup
+import presentation.screens.settings.SettingsViewAction.OnGroupNameChanged
+import presentation.screens.settings.SettingsViewAction.OnRemoveGroupClicked
+import presentation.screens.settings.SettingsViewAction.SaveFailureWordPoints
+import presentation.screens.settings.SettingsViewAction.SaveMaxPoints
+import presentation.screens.settings.SettingsViewAction.SaveRoundSeconds
+import presentation.screens.settings.SettingsViewAction.SaveSuccessWordPoints
+import presentation.screens.settings.SettingsViewAction.SetFailureWordPoints
+import presentation.screens.settings.SettingsViewAction.SetMaxPoints
+import presentation.screens.settings.SettingsViewAction.SetRoundSeconds
+import presentation.screens.settings.SettingsViewAction.SetSuccessWordPoints
+import presentation.screens.settings.composable.GroupInput
+import presentation.screens.settings.composable.SliderWithText
+import kotlin.reflect.KClass
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(
+    viewModel: SettingsViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
+                return SettingsViewModel() as T
+            }
+        }
+    )
+) {
 
     val state by viewModel.state.collectAsState()
 
@@ -89,34 +105,46 @@ private fun SettingsScreenView(
                     onClick = { onAction(AddGroup) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = stringResource(R.string.add_button))
+                    Text(text = stringResource(Res.string.add_button))
                 }
 
                 Spacer(modifier = Modifier.height(30.dp))
 
                 SliderWithText(
-                    selectedText = stringResource(R.string.slider_round_seconds, currentState.settings.roundSeconds),
+                    selectedText = stringResource(
+                        Res.string.slider_round_seconds,
+                        currentState.settings.roundSeconds
+                    ),
                     selectedValue = currentState.roundSecondsSliderValue,
                     onValueChanged = { onAction(SetRoundSeconds(it)) },
                     onValueChangeFinished = { onAction(SaveRoundSeconds) }
                 )
 
                 SliderWithText(
-                    selectedText = stringResource(R.string.slider_max_points, currentState.settings.maxPoints),
+                    selectedText = stringResource(
+                        Res.string.slider_max_points,
+                        currentState.settings.maxPoints
+                    ),
                     selectedValue = currentState.maxPointsSliderValue,
                     onValueChanged = { onAction(SetMaxPoints(it)) },
                     onValueChangeFinished = { onAction(SaveMaxPoints) }
                 )
 
                 SliderWithText(
-                    selectedText = stringResource(R.string.slider_success_word_points, currentState.settings.successWordPoints),
+                    selectedText = stringResource(
+                        Res.string.slider_success_word_points,
+                        currentState.settings.successWordPoints
+                    ),
                     selectedValue = currentState.successWordPointsSliderValue,
                     onValueChanged = { onAction(SetSuccessWordPoints(it)) },
                     onValueChangeFinished = { onAction(SaveSuccessWordPoints) }
                 )
 
                 SliderWithText(
-                    selectedText = stringResource(R.string.slider_failure_word_points, currentState.settings.failureWordPoints),
+                    selectedText = stringResource(
+                        Res.string.slider_failure_word_points,
+                        currentState.settings.failureWordPoints
+                    ),
                     selectedValue = currentState.failureWordPointsSliderValue,
                     onValueChanged = { onAction(SetFailureWordPoints(it)) },
                     onValueChangeFinished = { onAction(SaveFailureWordPoints) }
@@ -128,7 +156,6 @@ private fun SettingsScreenView(
     }
 }
 
-@Preview
 @Composable
 private fun SettingsScreenPreview() {
     SettingsScreenView(
