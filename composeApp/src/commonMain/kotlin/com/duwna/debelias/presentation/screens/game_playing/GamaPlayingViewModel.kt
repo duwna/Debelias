@@ -6,20 +6,20 @@ import com.duwna.debelias.data.MessageHandler
 import com.duwna.debelias.data.exceptionHandler
 import com.duwna.debelias.data.repositories.SettingsRepository
 import com.duwna.debelias.data.repositories.WordsRepository
+import com.duwna.debelias.navigation.Navigator
+import com.duwna.debelias.presentation.screens.game_playing.composables.WordSwipeDirection
 import debelias_multiplatform.composeapp.generated.resources.Res
 import debelias_multiplatform.composeapp.generated.resources.seconds_template
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.duwna.debelias.navigation.Navigator
 import org.jetbrains.compose.resources.getString
-import com.duwna.debelias.presentation.screens.game_playing.composables.WordSwipeDirection
 
 class GamaPlayingViewModel(
     private val settingsRepository: SettingsRepository,
@@ -70,7 +70,8 @@ class GamaPlayingViewModel(
     }
 
     private fun createTimer(maxSeconds: Int) {
-        (maxSeconds downTo 1).asFlow()
+        (maxSeconds - 1 downTo 0).asFlow()
+            .onEach { delay(1000) }
             .onEach { secondsLeft ->
                 _state.update {
                     it?.copy(
@@ -80,10 +81,10 @@ class GamaPlayingViewModel(
                         )
                     )
                 }
-            }
-            .onCompletion {
-                wordsRepository.addedPointsFlow.tryEmit(state.value?.currentPoints ?: 0)
-                navigator.popBackStack()
+                if (secondsLeft == 0) {
+                    wordsRepository.addedPointsFlow.tryEmit(state.value?.currentPoints ?: 0)
+                    navigator.popBackStack()
+                }
             }
             .launchIn(viewModelScope)
     }

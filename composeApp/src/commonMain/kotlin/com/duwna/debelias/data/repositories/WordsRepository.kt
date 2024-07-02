@@ -1,20 +1,28 @@
 package com.duwna.debelias.data.repositories
 
 import com.duwna.debelias.presentation.utils.mutableEventFlow
+import debelias_multiplatform.composeapp.generated.resources.Res
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
-import kotlin.random.Random
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 class WordsRepository {
 
     val addedPointsFlow = mutableEventFlow<Int>()
 
-    suspend fun loadNewWord(): String = withContext(Dispatchers.IO) {
-//        resourceManager.openRawStream(R.raw.all_words_file)
-//            .use { String(it.readBytes()) }
-//            .split("\n")
-//            .random()
-        Random.nextLong().toString()
+    private var cachedWords: List<String>? = null
+
+    @OptIn(ExperimentalResourceApi::class)
+    suspend fun loadNewWord(): String {
+        if (cachedWords == null) {
+            cachedWords = withContext(Dispatchers.IO) {
+                Res.readBytes("files/all_words_file.txt")
+                    .decodeToString()
+                    .split("\n")
+            }
+        }
+
+        return cachedWords?.random().orEmpty()
     }
 }
