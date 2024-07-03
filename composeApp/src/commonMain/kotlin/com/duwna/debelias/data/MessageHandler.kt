@@ -23,12 +23,12 @@ sealed class MessageEvent(val durationMillis: Long = DURATION) {
 
     abstract fun text(): String
 
-    class Message(val message: String, durationMillis: Long = DURATION) :
+    class Message(private val message: String, durationMillis: Long = DURATION) :
         MessageEvent(durationMillis) {
         override fun text(): String = message
     }
 
-    class Error(val throwable: Throwable, durationMillis: Long = DURATION) :
+    class Error(private val throwable: Throwable, durationMillis: Long = DURATION) :
         MessageEvent(durationMillis) {
         override fun text(): String = throwable.message.orEmpty()
     }
