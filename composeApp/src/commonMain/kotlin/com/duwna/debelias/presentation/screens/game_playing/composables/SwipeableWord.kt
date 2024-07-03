@@ -1,5 +1,6 @@
 package com.duwna.debelias.presentation.screens.game_playing.composables
 
+import androidx.compose.animation.core.exponentialDecay
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -13,12 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -26,27 +27,24 @@ import kotlin.math.roundToInt
 fun SwipeableWord(
     modifier: Modifier = Modifier,
     word: String,
+    containerHeightPx: Float,
     onSwiped: (WordSwipeDirection) -> Unit
 ) {
-//    val maxSwipeOffset = LocalWindowInfo.current.containerSize.height.toFloat()
-    val maxSwipeOffset = 200.dp.value
 
-    val anchoredDraggableState = remember {
-        AnchoredDraggableState(
+    // TODO fix decayAnimationSpec
+    val anchoredDraggableState = remember(containerHeightPx) {
+        AnchoredDraggableState<WordSwipeDirection>(
             initialValue = WordSwipeDirection.CENTER,
             anchors = DraggableAnchors {
-                WordSwipeDirection.UP at -maxSwipeOffset
+                WordSwipeDirection.UP at -containerHeightPx
                 WordSwipeDirection.CENTER at 0f
-                WordSwipeDirection.DOWN at maxSwipeOffset
+                WordSwipeDirection.DOWN at containerHeightPx
             },
-            positionalThreshold = {
-                it
-            },
-            velocityThreshold = {
-                1f
-            },
-            animationSpec = tween(),
-            confirmValueChange = { true }
+            positionalThreshold = { it },
+            velocityThreshold = { 0f },
+            snapAnimationSpec = tween(),
+            decayAnimationSpec = exponentialDecay(),
+            confirmValueChange = { it != WordSwipeDirection.CENTER }
         )
     }
 
@@ -62,6 +60,9 @@ fun SwipeableWord(
         anchoredDraggableState.snapTo(WordSwipeDirection.CENTER)
     }
 
+    val progress = (1 - abs(anchoredDraggableState.offset / containerHeightPx))
+        .coerceAtLeast(0.1f)
+
     AutoSizedText(
         text = word,
         color = MaterialTheme.colorScheme.onBackground,
@@ -69,7 +70,8 @@ fun SwipeableWord(
         style = MaterialTheme.typography.displayLarge,
         modifier = modifier
             .offset { IntOffset(0, anchoredDraggableState.offset.roundToInt()) }
-            .alpha(getAlphaFromSwipeProgress(anchoredDraggableState))
+            .scale(progress)
+            .alpha(progress)
             .anchoredDraggable(
                 state = anchoredDraggableState,
                 orientation = Orientation.Vertical
@@ -83,27 +85,3 @@ enum class WordSwipeDirection {
     CENTER,
     DOWN;
 }
-
-@OptIn(ExperimentalFoundationApi::class)
-private fun getAlphaFromSwipeProgress(state: AnchoredDraggableState<WordSwipeDirection>): Float {
-    return state.progress
-//    if (progress.to == WordSwipeDirection.CENTER.index) return 1f
-//
-//    return 1 - progress.fraction
-}
-
-
-//@Composable
-//fun SwipeableWord(
-//    modifier: Modifier = Modifier,
-//    word: String,
-//    onSwiped: (WordSwipeDirection) -> Unit
-//) {
-//    AutoSizedText(
-//        text = word,
-//        color = MaterialTheme.colorScheme.onBackground,
-//        textAlign = TextAlign.Center,
-//        style = MaterialTheme.typography.displayLarge,
-//        modifier = modifier
-//    )
-//}

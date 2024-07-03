@@ -12,15 +12,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.duwna.debelias.presentation.composables.PointsCounter
+import com.duwna.debelias.presentation.screens.game_playing.composables.SwipeableWord
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import com.duwna.debelias.presentation.composables.PointsCounter
-import com.duwna.debelias.presentation.screens.game_playing.GamaPlayingViewModel
-import com.duwna.debelias.presentation.screens.game_playing.composables.SwipeableWord
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -29,11 +33,14 @@ fun GamePlayingScreen(
 ) {
 
     val state by viewModel.state.collectAsState()
+    var containerHeight by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .onGloballyPositioned { containerHeight = it.size.height }
             .testTag("box_tag")
     ) {
         val currentState = state
@@ -52,6 +59,7 @@ fun GamePlayingScreen(
             SwipeableWord(
                 word = currentState.currentWord,
                 onSwiped = viewModel::onWordSwiped,
+                containerHeightPx = containerHeight / density.density,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(20.dp)
