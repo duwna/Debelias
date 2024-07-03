@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.duwna.debelias.presentation.composables.PointsCounter
-import com.duwna.debelias.presentation.screens.game_playing.composables.SwipeableWord
+import com.duwna.debelias.presentation.screens.game_playing.composables.SwipeableWordNative
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
@@ -56,7 +56,7 @@ fun GamePlayingScreen(
                     .align(Alignment.TopCenter)
             )
 
-            SwipeableWord(
+            SwipeableWordNative(
                 word = currentState.currentWord,
                 onSwiped = viewModel::onWordSwiped,
                 containerHeightPx = containerHeight / density.density,
