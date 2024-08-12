@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Debelias</string>
+    <string name="seconds_template">%1$d с.</string>
+    <string name="game_for">Игра до</string>
+    <string name="continue_game">Продолжить</string>
+    <string name="start_game">Начать</string>
+    <string name="exit_game">Завершить</string>
+    <string name="added_points_template">+%1$d</string>
+    <string name="settings_button">Настроить</string>
+    <string name="add_button">Добавить</string>
+    <string name="slider_round_seconds">Время раунда: %1$d c.</string>
+    <string name="slider_max_points">Очков до победы: %1$d</string>
+    <string name="slider_success_word_points">Очков за угаданное слово: %1$d</string>
+    <string name="slider_failure_word_points">Очков за пропущенное слово: -%1$d</string>
+    <string name="game_end_dialog">Игра завершена\nПобедила команда: %1$d</string>
+</resources>
